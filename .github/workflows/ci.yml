@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore & Build
+        run: dotnet build -c Release
+      - name: Smoke run
+        run: dotnet run --project DotNet.MedRec.DecisionAgent.csproj --no-build || true
